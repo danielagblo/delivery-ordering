@@ -2,15 +2,15 @@
 
 ## To run this project
 
-### Firstly : 
+### Firstly
 
 cd OrderingApp
 
-### Secondly : 
+### Secondly
 
 npm install
 
-### Lastly : 
+### Lastly
 
 npx expo start or npm start
 
