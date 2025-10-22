@@ -40,7 +40,7 @@ export default function Onboarding() {
      
       goTo(index + 1);
     } else {
-      // Use replace so onboarding isn't kept on the navigation stack.
+      
       router.replace('/login');
     }
   };
