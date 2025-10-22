@@ -6,7 +6,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  initialRouteName: 'onboarding',
 };
 
 export default function RootLayout() {
@@ -20,9 +20,7 @@ export default function RootLayout() {
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="signup" options={{ headerShown: false }} />
         <Stack.Screen name="verification-otp" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding-1" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding-2" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding-3" options={{ headerShown: false }} />
+    <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="destination" options={{ headerShown: false }} />
         <Stack.Screen name="actual-location-map" options={{ headerShown: false }} />
         <Stack.Screen name="pinned-order" options={{ headerShown: false }} />
