@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Image, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 
-const chatData = [
+const supportChatData = [
   {
     id: '1',
     type: 'date',
@@ -12,17 +13,17 @@ const chatData = [
   {
     id: '2',
     type: 'message',
-    sender: 'john',
-    name: 'John',
-    message: 'Hi,whats your last price? and are you open for negotiations?',
+    sender: 'you',
+    name: 'You',
+    message: 'Hi,can i grab? your product.i need this item to buy',
     timestamp: '12:00',
     profileImage: require('../assets/images/John.png'),
   },
   {
     id: '3',
     type: 'message',
-    sender: 'you',
-    name: 'You',
+    sender: 'alex',
+    name: 'Alex',
     message: 'The amount on the phone is my last price pls',
     timestamp: '12:00',
     profileImage: require('../assets/images/you.png'),
@@ -35,21 +36,15 @@ const chatData = [
   {
     id: '5',
     type: 'message',
-    sender: 'you',
-    name: 'You',
+    sender: 'alex',
+    name: 'Alex',
     message: 'Hello,can we talk?',
     timestamp: '12:00',
     profileImage: require('../assets/images/you.png'),
   },
-  {
-    id: '6',
-    type: 'typing',
-    sender: 'john',
-    profileImage: require('../assets/images/John.png'),
-  },
 ];
 
-export default function ChatScreen() {
+export default function SupportChatScreen() {
   const [message, setMessage] = useState('');
 
   const handleBackPress = () => {
@@ -71,25 +66,12 @@ export default function ChatScreen() {
     Alert.alert('Attachment', 'Opening attachment options...');
   };
 
-  const renderMessageItem = ({ item }) => {
+  const renderMessageItem = ({ item }: { item: any }) => {
     if (item.type === 'date') {
       return (
         <View style={styles.dateContainer}>
           <View style={styles.dateBubble}>
             <Text style={styles.dateText}>{item.content}</Text>
-          </View>
-        </View>
-      );
-    }
-
-    if (item.type === 'typing') {
-      return (
-        <View style={styles.typingContainer}>
-          <Image source={item.profileImage} style={styles.typingProfileImage} />
-          <View style={styles.typingDots}>
-            <View style={styles.typingDot} />
-            <View style={styles.typingDot} />
-            <View style={styles.typingDot} />
           </View>
         </View>
       );
@@ -120,10 +102,19 @@ export default function ChatScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Header (white) - remove dark top area from previous mock */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+          <Ionicons name="arrow-back" size={20} color="#333" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Support</Text>
+        <View style={{ width: 40 }} />
+      </View>
+
       {/* Chat Content */}
       <View style={styles.chatContainer}>
         <FlatList
-          data={chatData}
+          data={supportChatData}
           renderItem={renderMessageItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
@@ -131,12 +122,12 @@ export default function ChatScreen() {
         />
       </View>
 
-      {/* Message Input Bar */}
+      {/* Message Input Bar (positioned above bottom nav) */}
       <View style={styles.inputBar}>
-        <TouchableOpacity style={styles.attachmentButton} onPress={handleAttachment}>
-          <Ionicons name="add" size={20} color="#666" />
+        <TouchableOpacity style={styles.imageButton} onPress={handleAttachment}>
+          <Image source={require('../assets/images/you.png')} style={styles.imageIcon} />
         </TouchableOpacity>
-        
+
         <TextInput
           style={styles.textInput}
           placeholder="Type a message..."
@@ -145,13 +136,36 @@ export default function ChatScreen() {
           onChangeText={setMessage}
           multiline
         />
-        
+
         <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
           <Ionicons name="send" size={20} color="#333" />
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.voiceButton} onPress={handleVoiceMessage}>
           <Ionicons name="mic" size={20} color="#333" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Bottom navigation (visual replica of tab bar for this standalone screen) */}
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.navItem}>
+          <IconSymbol name="house.fill" size={22} color="#999" />
+          <Text style={styles.navLabel}>Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navItem}>
+          <IconSymbol name="person.fill" size={22} color="#999" />
+          <Text style={styles.navLabel}>Profile</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navItemActive}>
+          <IconSymbol name="paperplane.fill" size={22} color="#333" />
+          <Text style={[styles.navLabel, { color: '#333' }]}>Messages</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navItem}>
+          <IconSymbol name="cart.fill" size={22} color="#999" />
+          <Text style={styles.navLabel}>Orders</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -246,29 +260,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginRight: 4,
   },
-  typingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginVertical: 8,
-  },
-  typingProfileImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginRight: 8,
-  },
-  typingDots: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  typingDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#333',
-    marginHorizontal: 2,
-  },
   inputBar: {
     backgroundColor: '#fff',
     flexDirection: 'row',
@@ -313,5 +304,62 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  /* New styles for header, image button, and bottom nav */
+  header: {
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingTop: 50,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F0F0',
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+  },
+  imageButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#F0F0F0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  imageIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+  },
+  bottomNav: {
+    height: 80,
+    backgroundColor: '#FFFFFF',
+    borderTopColor: '#E5E5E5',
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingBottom: 20,
+  },
+  navItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navItemActive: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navLabel: {
+    fontSize: 11,
+    color: '#999',
+    marginTop: 4,
   },
 });
